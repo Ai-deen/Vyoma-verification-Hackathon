@@ -43,7 +43,7 @@ async def test_seq_bug_1(dut):
     assert dut.seq_seen.value == 1, f'Sequence 1011 is not detected due to error...Entered sequence is :0011011 '
 
 @cocotb.test()
-async def test_seq_bug2(dut):
+async def test_seq_bug_2(dut):
     """Test for seq detection """
 
     clock = Clock(dut.clk, 10, units="us")  # Create a 10us period clock on port clk
