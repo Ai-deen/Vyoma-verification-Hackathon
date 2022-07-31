@@ -102,7 +102,7 @@ Based on the above test input and analysing the design, we see the following
         if(inp_bit == 1)
           next_state = SEQ_1011;
         else
-          next_state = IDLE;            //hereee it should be seq10
+          next_state = IDLE;            //here next_state should be seq10
       end
 ```
 For the seq_detect_1011 design, the ``next_state`` in ``SEQ_101`` should be ``SEQ_10`` instead of ``IDLE`` as in the design code.
