@@ -2,10 +2,7 @@
 
 The verification environment is setup using [Vyoma's UpTickPro](https://vyomasystems.com) provided for the hackathon.
 
-*Make sure to include the Gitpod id in the screenshot*
-
-![Screenshot (134)](https://user-images.githubusercontent.com/105343698/182012490-0afa47c3-ed93-4445-8886-71c8dc9f8cad.png)
-
+![Screenshot (133)](https://user-images.githubusercontent.com/105343698/182012523-35921775-b37c-4f47-824b-eb3084a278ab.png)
 
 ## Verification Environment
 
@@ -63,7 +60,7 @@ For the mux design, the ``sel`` and ``inp30`` are missing in the design code.
 ## Design Fix
 Updating the design and re-running the test makes the test pass.
 
-![Screenshot (133)](https://user-images.githubusercontent.com/105343698/182012499-5156bf50-a0c7-4a8e-9a64-535a929832c8.png)
+![Screenshot (134)](https://user-images.githubusercontent.com/105343698/182012534-927fc672-a5e1-4928-8b89-9ef5a276755e.png)
 
 The updated design is checked in as mux_fix.v
 
