@@ -11,12 +11,7 @@ The [CoCoTb](https://www.cocotb.org/) based Python test is developed as explaine
 
 The values are assigned to the input port using 
 ```
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
+
     dut.inp_bit.value = 1
     await FallingEdge(dut.clk)
     dut.inp_bit.value = 0
