@@ -6,7 +6,7 @@ The verification environment is setup using [Vyoma's UpTickPro](https://vyomasys
 
 ## Verification Environment
 
-The [CoCoTb](https://www.cocotb.org/) based Python test is developed as explained. The test drives inputs to the Design Under Test (mux module here) which takes in 2-bit inputs and 5-bit *sel*
+The [CoCoTb](https://www.cocotb.org/) based Python test is developed as explained. The test drives inputs to the Design Under Test (mux module here) which takes in 2-bit inputs and 5-bit ``sel``
 
 The values are assigned to the input port using 
 ```
@@ -66,7 +66,7 @@ The updated design is checked in as mux_fix.v
 
 ## Verification Strategy
 
-Wrote a test that checks all values with random inputs. If there are any bugs that werent fixed, they will be detected immediately.
+Wrote a test ``test_mux``  that checks all values with random inputs. If there are any bugs that werent fixed, they will be detected immediately.
 The  fixed design didnt declare any errors after running the final test which verifies that the updated design is working properly.
 
 ## Is the verification complete ?
