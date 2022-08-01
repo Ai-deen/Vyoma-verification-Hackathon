@@ -89,7 +89,7 @@ Based on the above test input and analysing the design, we see the following obs
     mav_putvalue_instr =0x40007033
 ```
 
-Instruction value of ANDN(```0x40007033```) is containing a bug.
+When instruction value is ANDN(```0x40007033```), the design is containing a bug.
 We can see that if ```mav_putvalue_src1``` is ```0x0``` , the test passes without failing otherwise it fails for all other values.
 
 
