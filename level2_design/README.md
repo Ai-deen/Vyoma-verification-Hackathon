@@ -1,4 +1,4 @@
-# Bit Manupulation Coprocessor Design Verification
+# Bitmanipulation Coprocessor Design Verification
 
 The verification environment is setup using [Vyoma's UpTickPro](https://vyomasystems.com) provided for the hackathon.
 
@@ -7,114 +7,98 @@ The verification environment is setup using [Vyoma's UpTickPro](https://vyomasys
 
 ## Verification Environment
 
-The [CoCoTb](https://www.cocotb.org/) based Python test is developed as explained. The test drives inputs to the Design Under Test (module mkbitmanip module here)
+The [CoCoTb](https://www.cocotb.org/) based Python test is developed as explained. The test drives inputs to the Design Under Test (module mkbitmanip module here) which takes in three 32-bit inputs and 32-bit instruction.
 
 The values are assigned to the input port using 
 ```
 
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
+    # input transaction
+    mav_putvalue_src1 = 0x5
+    mav_putvalue_src2 = 0x0
+    mav_putvalue_src3 = 0x0
+    mav_putvalue_instr = 0x101010B3
 ```
 
 The assert statement is used for comparing the mux's outut to the expected value.
 
 The following error is seen:
 ```
-assert dut.seq_seen.value == 1, f'Sequence 1011 is not detected due to error...'
+    # comparison
+    error_message = f'Value mismatch DUT = {hex(dut_output)} does not match MODEL = {hex(expected_mav_putvalue)}'
+    assert dut_output == expected_mav_putvalue, error_message
 ```
 ## Test Scenario **(Important)**
 - Test Inputs: 
 ```
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
+    
+    # input transaction
+    mav_putvalue_src1 = 0x5
+    mav_putvalue_src2 = 0x4
+    mav_putvalue_src3 = 0x3
+    mav_putvalue_instr =0x40007033
 ```
-- Expected Output: dut.seq_seen.value == 1 i.e EXPECT=1
-- Observed Output in the DUT: DUT=0
+- Expected Output: EXPECTED OUTPUT=0x3
+- Observed Output in the DUT:DUT OUTPUT=0x9
 
 Output mismatches for the above inputs proving that there is a design bug
 
-## Design Bug
-Based on the above test input and analysing the design, we see the following
-
+## Test Scenario **(Important)**
+- Test Inputs: 
 ```
-      SEQ_1:
-      begin
-        if(inp_bit == 1)
-          next_state = IDLE;              //here next_state should be SEQ_1
-        else
-          next_state = SEQ_10;   
+    # input transaction
+    mav_putvalue_src1 = 0x34762354
+    mav_putvalue_src2 = 0x364527
+    mav_putvalue_src3 = 0x35638756
+    mav_putvalue_instr =0x40007033
 ```
-For the seq_detect_1011 design, the ``next_state`` in ``SEQ_1`` should be ``SEQ_1`` instead of ``IDLE`` as in the design code.
+- Expected Output: EXPECTED OUTPUT=0x688044a1
+- Observed Output in the DUT: DUT OUTPUT=0x6c0209
 
 ## Test Scenario **(Important)**
 - Test Inputs: 
 ```
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 0
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
-    dut.inp_bit.value = 1
-    await FallingEdge(dut.clk)
+    # input transaction
+    mav_putvalue_src1 = 0x4876
+    mav_putvalue_src2 = 0x375f
+    mav_putvalue_src3 = 0xabcd
+    mav_putvalue_instr =0x40007033
 ```
-- Expected Output: dut.seq_seen.value == 1 i.e EXPECT=1
-- Observed Output in the DUT: DUT=0
+- Expected Output: EXPECTED OUTPUT=0x9041
+- Observed Output in the DUT: DUT OUTPUT=0xad
 
+## Test Scenario **(Important)**
+- Test Inputs: 
+```
+    # input transaction
+    mav_putvalue_src1 = 0x0
+    mav_putvalue_src2 = 0x375f
+    mav_putvalue_src3 = 0xabcd
+    mav_putvalue_instr =0x40007033
+```
+- Expected Output: EXPECTED OUTPUT=0x1
+- Observed Output in the DUT: DUT OUTPUT=0x1
 
 ## Design Bug
-Based on the above test input and analysing the design, we see the following
+Based on the above test input and analysing the design, we see the following observation 
 
 ```
-      SEQ_101:
-      begin
-        if(inp_bit == 1)
-          next_state = SEQ_1011;
-        else
-          next_state = IDLE;            //here next_state should be seq10
-      end
+    mav_putvalue_instr =0x40007033
 ```
-For the seq_detect_1011 design, the ``next_state`` in ``SEQ_101`` should be ``SEQ_10`` instead of ``IDLE`` as in the design code.
 
-## Design Fix
-Updating the design and re-running the test makes the test pass.
+Instruction value of ANDN(```0x40007033```) is containing a bug.
+We can see that if ```mav_putvalue_src1``` is ```0x0``` , the test passes without failing otherwise it fails for all other values.
 
-![Screenshot (136)](https://user-images.githubusercontent.com/105343698/182013584-0f082a39-bf93-49d7-98de-09c3e542e86d.png)
 
-The updated design is checked in as seq_detect_1011_fix.v
+
+![Screenshot (143)](https://user-images.githubusercontent.com/105343698/182174340-51025531-6c77-4864-a343-da6175986e4b.png)
+
+
+So Bitmanipulation Coprocessor design contains bug at  ```mav_putvalue_instr =0x40007033```
+
 
 ## Verification Strategy
 
-The design should not recognize 1011011 pattern even if it has 1011 pattern in it.
-All type of input patterns which contain 1011 sequence should pass. 
-All of these tests should pass to verify that the code is working properly. 
+
 
 ## Is the verification complete ?
 
-Yes,the verification is complete as there are no errors declared and it passes through all the tests.
