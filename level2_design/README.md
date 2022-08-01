@@ -102,7 +102,7 @@ So Bitmanipulation Coprocessor design contains bug at  ```mav_putvalue_instr =0x
 
 ## Verification Strategy
 
-The inputs are 32 bits which is quite long as each input has 4294967296 possible values and there are three inputs in the design. Parsing through all these combinations of inputs takes a long time, we also need to consider the instruction inputs.
+The inputs are 32 bits which is quite long as each input has 4294967296 possible values and there are three inputs in the design. Parsing through all these combinations of inputs takes a long time and we have to consider the instruction inputs too.
 A testbench which iterates through all the values possible is written in test_bit.py. Three loops parsing through the possible input values and instruction value will be running until the test case finds a error.
 
 Other strategy is to give random inputs and check if the test case passes or fails.In this case, the manual work is more and we will not be able to know the exact number of errors and as the possible inputs are high.
