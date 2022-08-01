@@ -6,7 +6,7 @@ PWD=$(shell pwd)
 
 export PYTHONPATH := $(PWD):$(PYTHONPATH)  # reference model
 
-VERILOG_SOURCES = $(PWD)/present_encryptor.v            # provide your design path
+VERILOG_SOURCES = $(PWD)/encryp-decryp_buggy.v           # provide your design path
 
 TOPLEVEL :=  Verilog_Buggy
 MODULE   :=  test
