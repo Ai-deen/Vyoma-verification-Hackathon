@@ -4,10 +4,12 @@ TOPLEVEL_LANG ?= verilog
 
 PWD=$(shell pwd)
 
-VERILOG_SOURCES = $(PWD)/               # provide your design path
+export PYTHONPATH := $(PWD):$(PYTHONPATH)  # reference model
 
-TOPLEVEL :=           # design file
-MODULE   :=     # test file
+VERILOG_SOURCES = $(PWD)/present_encryptor.v            # provide your design path
+
+TOPLEVEL :=  Verilog_Buggy
+MODULE   :=  test
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
 
