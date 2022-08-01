@@ -22,7 +22,7 @@ The assert statement is used for comparing the encryptor's output to the expecte
 
 The following error is seen:
 ```
-assert dut.encrypt_data.value == 0b1110, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b1110},DUT = {dut.encrypt_data.value}'
+assert dut.encrypt_data.value == 0b1110, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b1110},DUT = {int(dut.encrypt_data.value)}'
 ```
 ## Test Scenario-1 **(Important)**
 - Test Inputs:
@@ -35,7 +35,7 @@ assert dut.encrypt_data.value == 0b1110, f'Test failed, Expected Encrypted Data 
     yield Timer(1, units="ns")   
 ```
 - Expected Output: Expected data = 4
-- Observed Output in the DUT:DUT = 0000
+- Observed Output in the DUT:DUT = 0
 
 Output mismatches for the above inputs proving that there is a design bug
 
@@ -50,7 +50,7 @@ Output mismatches for the above inputs proving that there is a design bug
     yield Timer(1, units="ns")   
 ```
 - Expected Output: Expected data = 7
-- Observed Output in the DUT:DUT = 0000
+- Observed Output in the DUT:DUT = 5
 
 Output mismatches for the above inputs proving that there is a design bug
 
@@ -65,7 +65,7 @@ Output mismatches for the above inputs proving that there is a design bug
     yield Timer(1, units="ns")  
 ```
 - Expected Output: Expected data = 8
-- Observed Output in the DUT:DUT = 0000
+- Observed Output in the DUT:DUT = 0
 
 Output mismatches for the above inputs proving that there is a design bug
 
@@ -81,7 +81,7 @@ Output mismatches for the above inputs proving that there is a design bug
     yield Timer(1, units="ns") 
 ```
 - Expected Output: Expected data = 7
-- Observed Output in the DUT:DUT = 0000
+- Observed Output in the DUT:DUT = 5
 
 Output mismatches for the above inputs proving that there is a design bug
 
@@ -96,7 +96,7 @@ Output mismatches for the above inputs proving that there is a design bug
     yield Timer(1, units="ns") 
 ```
 - Expected Output: Expected data = 14
-- Observed Output in the DUT:DUT = 0000
+- Observed Output in the DUT:DUT = 0
 
 Output mismatches for the above inputs proving that there is a design bug
 
@@ -104,32 +104,49 @@ Output mismatches for the above inputs proving that there is a design bug
 According to the instructions,a Bug has been inserted in the design
 
 ```
-      5'b01101: out = inp12;    ===>BUG
-      5'b01101: out = inp13;    
+    always @(*)
+    begin
+      xor_public[3]<=endata[3] & publ_key[3];           // XOR operation of encrypted data and public key
+      xor_public[2]<=endata[2] & publ_key[2];           
+      xor_public[1]<=endata[1] & publ_key[1];
+      xor_public[0]<=endata[0] & publ_key[0];
+    
+   
+      xor_private[3]<=xor_public[3] & prvi_key[3];     // XOR operation of data and private key
+      xor_private[2]<=xor_public[2] & prvi_key[2];
+      xor_private[1]<=xor_public[1] & prvi_key[1];
+      xor_private[0]<=xor_public[0] & prvi_key[0]; 
 ```
-The XOR symbol(^) has been replaced with AND symbol(&) and so the design is buggy.
+The XOR symbol(^) has been replaced with AND symbol(&) and so the design is made buggy.
 
 ## Design Bug - 2
 According to the instructions,a Bug has been inserted in the design
 
 ```
-      5'b01101: out = inp12;    ===>BUG
-      5'b01101: out = inp13;    
+      privatekey_out[3] <= private_key[3]&grey_out[3];              // XOR operation with private key
+      privatekey_out[2] <= private_key[2]&grey_out[2];
+      privatekey_out[1] <= private_key[1]&grey_out[1];
+      privatekey_out[0] <= private_key[0]&grey_out[0];
+
+      encrypt_out[3] <= privatekey_out[3]&publ_key[3];              // XOR operation with public key
+      encrypt_out[2] <= privatekey_out[2]&publ_key[2];
+      encrypt_out[1] <= privatekey_out[1]&publ_key[1];
+      encrypt_out[0] <= privatekey_out[0]&publ_key[0];  
 ```
-The XOR symbol(^) has been replaced with AND symbol(&) and so the design is buggy.
+The XOR symbol(^) has been replaced with AND symbol(&) and so the design is made buggy.
 
 
-## Design Fix
+## Design Test
 Updating the design and re-running the test makes the tests fail.
 
-![Screenshot (134)](https://user-images.githubusercontent.com/105343698/182012534-927fc672-a5e1-4928-8b89-9ef5a276755e.png)
+![Screenshot (138)](https://user-images.githubusercontent.com/105343698/182117016-166314a3-a385-4a53-8cde-76390c9e8783.png)
 
 The updated design is checked in as encryp_decryp_buggy.v
 
 ## Verification Strategy
 
-The buggy design failed all the test cases which passed through the original design without any problem.
+The buggy design should fail all the test cases which passed through the original design without any problem.
 
 ## Is the verification complete ?
 
-Yes,the verification is complete as there are no errors declared and it failed all the tests.
+Yes,the verification is complete as there as the buggy design failed all the tests.
