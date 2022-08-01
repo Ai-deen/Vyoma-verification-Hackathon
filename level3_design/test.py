@@ -18,34 +18,97 @@ def clock_gen(signal):
         signal.value <= 1
         yield Timer(1) 
 
-# Sample Test
 @cocotb.test()
-def run_test(dut):
+def run_test_1(dut):
 
     # clock
-    cocotb.fork(clock_gen(dut.clk_i))
+    cocotb.fork(clock_gen(dut.clk))
 
-    dut.data_i.value = 0x456474456747FFA21234
+    input = 0x1
+    dut.hexadecimal_input.value = input
     yield Timer(1, units="ns")
-    dut.key_load.value = 1
-    yield Timer(1, units="ns")
-    dut.data_i.value = 0x1234123412341234 
-    yield Timer(1, units="ns")
-    dut.key_load.value = 0 
-    yield Timer(1, units="ns")
-    dut.data_load.value = 1
-    yield Timer(1, units="ns")
-    dut.data_load.value = 0
+    key = 0xD
+    dut.public_key.value = key
     yield Timer(1, units="ns")
 
-    #330 data_i = 80'hFFFFFFFF_FFFFFFFF_FFFF ; key_load = 1; // Key
-    #10  data_i = 64'h00000000_00000000      ; key_load = 0; data_load = 1; // Plaintext
-    #10  data_load = 0;
-    #330 data_i = 80'h00000000_00000000_0000 ; key_load = 1; // Key
-    #10  data_i = 64'hFFFFFFFF_FFFFFFFF      ; key_load = 0; data_load = 1; // Plaintext
-    #10  data_load = 0;
-    #330 data_i = 80'hFFFFFFFF_FFFFFFFF_FFFF ; key_load = 1; // Key
-    #10  data_i = 64'hFFFFFFFF_FFFFFFFF      ; key_load = 0; data_load = 1; // Plaintext
-    #10  data_load = 0;
-    dut_output = dut.data_o.value
-    cocotb.log.info(f'DUT OUTPUT={dut_output}')
+    cocotb.log.info(f'DUT INPUT={dut.hexadecimal_input.value}')
+    cocotb.log.info(f'DUT KEY={dut.public_key.value}')
+    cocotb.log.info(f'DUT ENCRYPT_DATA={dut.encrypt_data.value}')
+    assert dut.encrypt_data.value == 0b0100, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b0100},DUT = {dut.encrypt_data.value}'
+
+
+@cocotb.test()
+def run_test_2(dut):
+
+    # clock
+    cocotb.fork(clock_gen(dut.clk))
+
+    input = 0x45
+    dut.hexadecimal_input.value = input
+    yield Timer(1, units="ns")
+    key = 0xD
+    dut.public_key.value = key
+    yield Timer(1, units="ns")
+
+    cocotb.log.info(f'DUT INPUT={dut.hexadecimal_input.value}')
+    cocotb.log.info(f'DUT KEY={dut.public_key.value}')
+    cocotb.log.info(f'DUT ENCRYPT_DATA={dut.encrypt_data.value}')
+    assert dut.encrypt_data.value == 0b0111, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b0111},DUT = {dut.encrypt_data.value}'
+
+
+@cocotb.test()
+def run_test_3(dut):
+
+    # clock
+    cocotb.fork(clock_gen(dut.clk))
+
+    input = 0x2
+    dut.hexadecimal_input.value = input
+    yield Timer(1, units="ns")
+    key = 0xD
+    dut.public_key.value = key
+    yield Timer(1, units="ns")
+
+    cocotb.log.info(f'DUT INPUT={dut.hexadecimal_input.value}')
+    cocotb.log.info(f'DUT KEY={dut.public_key.value}')
+    cocotb.log.info(f'DUT ENCRYPT_DATA={dut.encrypt_data.value}')
+    assert dut.encrypt_data.value == 0b1000, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b1000},DUT = {dut.encrypt_data.value}'
+
+@cocotb.test()
+def run_test_4(dut):
+
+    # clock
+    cocotb.fork(clock_gen(dut.clk))
+
+    input = 0x41
+    dut.hexadecimal_input.value = input
+    yield Timer(1, units="ns")
+    key = 0xD
+    dut.public_key.value = key
+    yield Timer(1, units="ns")
+
+    cocotb.log.info(f'DUT INPUT={dut.hexadecimal_input.value}')
+    cocotb.log.info(f'DUT KEY={dut.public_key.value}')
+    cocotb.log.info(f'DUT ENCRYPT_DATA={dut.encrypt_data.value}')
+    assert dut.encrypt_data.value == 0b0111, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b0111},DUT = {dut.encrypt_data.value}'
+
+
+@cocotb.test()
+def run_test_5(dut):
+
+    # clock
+    cocotb.fork(clock_gen(dut.clk))
+
+    input = 0xA
+    dut.hexadecimal_input.value = input
+    yield Timer(1, units="ns")
+    key = 0xD
+    dut.public_key.value = key
+    yield Timer(1, units="ns")
+
+    cocotb.log.info(f'DUT INPUT={dut.hexadecimal_input.value}')
+    cocotb.log.info(f'DUT KEY={dut.public_key.value}')
+    cocotb.log.info(f'DUT ENCRYPT_DATA={dut.encrypt_data.value}')
+    assert dut.encrypt_data.value == 0b1110, f'Test failed, Expected Encrypted Data is different from the Output data.Expected data = {0b1110},DUT = {dut.encrypt_data.value}'
+
+    
