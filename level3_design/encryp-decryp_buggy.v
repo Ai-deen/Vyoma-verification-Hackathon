@@ -1,5 +1,5 @@
  /* Main Module of the project which takes hexadecimal input and first encrypt it and then decrypt it and output hexadecimal data */ 
-  module VerilogBM_143_206 (
+  module Verilog_Buggy(
   input [15:0] hexadecimal_input,                 // hexadecimal input
   input [3:0] public_key,                         // public key
   output reg [15:0] hexadecimal_output,           // hexadecimal output
