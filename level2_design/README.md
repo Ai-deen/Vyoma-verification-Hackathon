@@ -54,6 +54,8 @@ Output mismatches for the above inputs proving that there is a design bug
 - Expected Output: EXPECTED OUTPUT=0x688044a1
 - Observed Output in the DUT: DUT OUTPUT=0x6c0209
 
+Output mismatches for the above inputs proving that there is a design bug
+
 ## Test Scenario **(Important)**
 - Test Inputs: 
 ```
@@ -65,6 +67,8 @@ Output mismatches for the above inputs proving that there is a design bug
 ```
 - Expected Output: EXPECTED OUTPUT=0x9041
 - Observed Output in the DUT: DUT OUTPUT=0xad
+
+Output mismatches for the above inputs proving that there is a design bug
 
 ## Test Scenario **(Important)**
 - Test Inputs: 
