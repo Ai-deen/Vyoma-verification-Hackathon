@@ -112,5 +112,5 @@ Other strategy is to give random inputs and check if the test case passes or fai
 
 Giving random inputs produced one error where the bug is ```mav_putvalue_instr =0x40007033```
 
-The inputs are quite long so the time to run the testbench is also high. The test_bit.py testbench is running too long and the terminal had to be killed as there were not many errors found through this method.
+The inputs are quite long so the time to run the testbench is also high. The test_bit.py testbench is running too long and the terminal had to be killed, there were not many errors found through this method either.
 
